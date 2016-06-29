@@ -99,7 +99,13 @@ func paginationLink(endpoint string, pg string, which string) string {
 		}
 	}
 
-	return fmt.Sprintf("%s/%s?page=%d", apiPath, endpoint, page)
+
+	link := fmt.Sprintf("%s/%s?page=%d", apiPath, endpoint, page)
+	if endpoint == "search" && which == "last" { // TODO ugly
+		link = ""
+	}
+
+	return link
 }
 
 func newResourceObject(attr Exhibition) ResourceObject {
@@ -117,8 +123,8 @@ func newResourceObjects (exhibitions []Exhibition, endpoint string, pg string) R
 	}
 
 	links := PaginationLinks {
-		First: paginationLink(endpoint, firstPage, ""),
-		Last: paginationLink(endpoint, lastPage, ""),
+		First: paginationLink(endpoint, firstPage, "first"),
+		Last: paginationLink(endpoint, lastPage, "last"),
 		Prev: paginationLink(endpoint, pg, "prev"),
 		Next: paginationLink(endpoint, pg, "next"),
 	}
@@ -170,7 +176,7 @@ func main() {
 		v1.OPTIONS("/search", EndpointsOptions) // http options
 	}
 
-	// API
+	// API -- TODO improve this
 	current := router.Group("api")
 	{
 		current.GET("/", ListEndpoints)  // list all exhibitions
@@ -240,7 +246,6 @@ func GetExhibitions(c *gin.Context) {
 	query := PaginateQuery("SELECT * FROM exhibiciones ORDER BY id", page)
 	_, err := dbmap.Select(&exhibitions, query)
 	checkErr(err)
-
 
 	if err == nil {
 		content := newResourceObjects(exhibitions, "exhibitions", page)
