@@ -29,8 +29,7 @@ $ go get .
 $ go run api.go
 ```
 
-Note: `api.go` reads a couple of extra enviroment vars: `HTTP_PORT` (default: `8080`) and `DB_FILENAME` (default: `./db/electronicArtArgentina.sqlite3`)
-
+Note: `api.go` reads a couple of extra enviroment vars: `HTTP_PORT` (default: `8080`), `DB_FILENAME` (default: `./db/electronicArtArgentina.sqlite3`), `TMPL_DIR` (default: `./tmpl`)
 
 If everything went OK, you should see something like
 
