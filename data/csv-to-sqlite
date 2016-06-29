@@ -1,0 +1,14 @@
+CREATE TABLE "exhibiciones" ("id" integer not null primary key autoincrement, "anio" integer, "nombre_exhibicion" varchar(255), "nombre_locacion" varchar(255), "curador_0" varchar(255), "curador_1" varchar(255), "curador_2" varchar(255), "curador_3" varchar(255), "fecha_inicio" datetime, "fecha_finalizacion" datetime, "nombre_obra" varchar(255), "nombre_artista_0" varchar(255), "nombre_artista_1" varchar(255), "nombre_artista_2" varchar(255), "nombre_artista_3" varchar(255), "nombre_artista_4" varchar(255), "nombre_artista_5" varchar(255), "nombre_artista_6" varchar(255), "nombre_artista_7" varchar(255), "nombre_artista_8" varchar(255), "tecnica" varchar(255));
+
+.mode csv
+.separator ,
+.import electronicArtArgentina-w-id-sqlite-date.csv exhibiciones
+
+CREATE VIRTUAL TABLE curadores USING fts4(id, curador_0, curador_1, curador_2);
+
+INSERT INTO curadores SELECT id, curador_0, curador_1, curador_2 FROM exhibiciones;
+
+CREATE VIRTUAL TABLE artistas USING fts4(id, nombre_artista_0,nombre_artista_1,nombre_artista_2,nombre_artista_3,nombre_artista_4,nombre_artista_5,nombre_artista_6,nombre_artista_7,nombre_artista_8);
+
+INSERT INTO artistas SELECT id, nombre_artista_0, nombre_artista_1, nombre_artista_2, nombre_artista_3, nombre_artista_4, nombre_artista_5, nombre_artista_6, nombre_artista_7, nombre_artista_8 FROM exhibiciones;
+
