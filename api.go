@@ -4,6 +4,7 @@ import (
 	"os"
 	"fmt"
 	"log"
+	"path"
 	"time"
 	"strconv"
  	"database/sql"
@@ -14,14 +15,15 @@ import (
 )
 
 var (
-	dbFilename  string = "./db/electronicArtArgentina.sqlite3"
-	tableName   string = "exhibiciones"
-	httpPort    string = "8080"
-	apiHostname string = "http://arte-electronico.cyberpunk.com.ar"
-	apiPath     string = "/api"
-	perPage     int = 20
-	firstPage   string = "1"
-	lastPage    string = "80" // (1593 / perPage) // TODO FIX ME
+	tmplDirectory string = "./tmpl"
+	dbFilename    string = "./db/electronicArtArgentina.sqlite3"
+	tableName     string = "exhibiciones"
+	httpPort      string = "8080"
+	apiHostname   string = "http://arte-electronico.cyberpunk.com.ar"
+	apiPath       string = "/api"
+	perPage       int = 20
+	firstPage     string = "1"
+	lastPage      string = "80" // (1593 / perPage) // TODO FIX ME
 
 )
 
@@ -155,6 +157,11 @@ func init() {
 	if d != "" {
 		dbFilename = d
 	}
+
+	t:= os.Getenv("TMPL_DIR")
+	if t != "" {
+		tmplDirectory = t
+	}
 }
 
 func main() {
@@ -191,7 +198,7 @@ func main() {
 	}
 
 	// Home
-	router.LoadHTMLGlob("tmpl/*")
+	router.LoadHTMLGlob(path.Join(tmplDirectory, "*"))
 	router.GET("/", func(c *gin.Context) {
 		c.HTML(200, "index.tmpl", gin.H{
 			"title": "JSON API for Dataset Arte Electrónico Argentino",
