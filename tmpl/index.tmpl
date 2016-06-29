@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ .title }}</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+  </head>
+  <body>
+
+    <div class="container">
+      <header>
+        <h1>{{ .title }}</h1>
+
+        <p>A very simple RESTful JSON API to query the dataset curated by <a href="https://github.com/cristianReynaga">@cristianReynaga</a>, you can read more about it <a href="https://github.com/lvm/Dataset-Arte-Electronico-Argentino">here</a> (in spanish).<br>
+          The code is available on <a href="https://github.com/lvm/api-dataset-arte-electronico-argentino">Github</a> with a MIT License.</p>
+
+        <p>The current version is <code>{{ .version }}</code></p>
+
+        <p> Note: This API is a <em>work in progress</em>. </p>
+      </header>
+
+      <section>
+        <h2>Endpoints</h2>
+
+        <p>
+          For the moment, there are two ways to query the data: <code>exhibitions</code> and <code>search</code>. Both accept only <code>GET</code> and <code>OPTION</code> requests.<br>
+          All endpoints are accesible directly via <code>/api/{endpoint}</code> or <code>/api/{{ .version }}/{endpoint}</code>.
+        </p>
+
+        <h3><code>exhibitions</code></h3>
+
+        <p>This method allows to query all of them or just one.  </p>
+
+        <p><h4>List all (around 15xx) exhibitions</h4></p>
+
+        <pre><code>GET /api/exhibitions</code></pre>
+
+        <p><h4>Just one by passing the ID</h4></p>
+
+        <pre><code>GET /api/exhibitions/23</code></pre>
+
+        <h3><code>search</code></h3>
+
+        <p>This method allows to search, primarily by the exhibition's name and then you can pass additional parameters to narrow your search. These extra parameters use the <code>AND</code> operator when building the query.</p>
+
+        <table class="table table-striped table-condensed">
+          <thead>
+            <tr>
+              <th>param</th>
+              <th>values</th>
+            </tr>
+          </thead><tbody>
+            <tr>
+              <td><code>q</code></td>
+              <td>The full name or a part of the name of an exhibition. Can be any <code>string</code></td>
+            </tr>
+            <tr>
+              <td><code>year</code></td>
+              <td>The <em>valid</em> format would be <code>YYYY</code>, but you can pass any <code>int (32)</code></td>
+            </tr>
+            <tr>
+              <td><code>when</code></td>
+              <td>Only takes <code>since</code> and <code>until</code>. They work as <code>greater-than-equal</code> and <code>less-than-equal</code> respectively. Requires the <code>year</code> parameter to work.</td>
+            </tr>
+            <tr>
+              <td><code>technique</code></td>
+              <td>The name of a technique, can be any <code>string</code>.</td>
+            </tr>
+            <tr>
+              <td><code>curator</code></td>
+              <td>The name of a curator, can be any <code>string</code>.</td>
+            </tr>
+            <tr>
+              <td><code>artist</code></td>
+              <td>The name of an artist, can be any <code>string</code>.</td>
+            </tr>
+            <tr>
+              <td><code>work</code></td>
+              <td>The name of the work, can be any <code>string</code>.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p><h4>List all exhibitions with <code>festival</code> on its name</h4></p>
+
+        <pre><code>GET /api/search?q=festival
+        </code></pre>
+
+        <p><h4>...during 1998</h4></p>
+
+        <pre><code>GET /api/search?q=festival&amp;year=1998
+        </code></pre>
+
+        <p><h4>...until 1998</h4></p>
+
+        <pre><code>GET /api/search?q=festival&amp;year=1998&amp;when=until
+        </code></pre>
+
+        <p><h4>...since 1998</h4></p>
+
+        <pre><code>GET /api/search?q=festival&amp;year=1998&amp;when=since
+        </code></pre>
+
+        <p><h4>...with technique <code>videoart</code></h4></p>
+
+        <pre><code>GET /api/search?q=festival&amp;year=1998&amp;when=since&amp;technique=videoart
+        </code></pre>
+
+        <p><h4>...curated by Graciela Taquini</h4></p>
+
+        <pre><code>GET /api/search?q=festival&amp;year=1998&amp;when=since&amp;technique=videoart&amp;curator=taquini
+        </code></pre>
+
+        <p><h4>...artist Joanna Rytel</h4></p>
+
+        <pre><code>GET /api/search?q=festival&amp;year=1998&amp;when=since&amp;technique=videoart&amp;curator=taquini&amp;artist=rytel
+        </code></pre>
+
+        <p><h4>...work having the word <code>sheep</code> on its name</h4></p>
+
+        <pre><code>GET /api/search?q=festival&amp;year=1998&amp;when=since&amp;technique=videoart&amp;curator=taquini&amp;artist=rytel&amp;work=sheep</code></pre>
+      </section>
+
+      <footer>
+        <h2>Contributions</h2>
+        <p>If you're interested in contributing, <a href="https://github.com/lvm/api-dataset-arte-electronico-argentino">fork it</a>!</p>
+
+        <h2>Issues</h2>
+        <p>Found an issue? Please <a href="https://github.com/lvm/api-dataset-arte-electronico-argentino/issues">report it here</a></p>
+
+        <h2>Credits</h2>
+        <ul>
+          <li><a href="https://github.com/cristianReynaga/Dataset-Arte-Electronico-Argentino">Original Dataset</a> by Cristian Reynaga</a></li>
+          <li><a href="https://github.com/lvm/api-dataset-arte-electronico-argentino">JSON API</a> by Mauro Lizaur</a></li>
+        </ul>
+      </footer>
+
+    </div>
+  </body>
+</html>
