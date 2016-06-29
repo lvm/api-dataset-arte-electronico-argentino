@@ -29,6 +29,9 @@ $ go get .
 $ go run api.go
 ```
 
+Note: `api.go` reads a couple of extra enviroment vars: `HTTP_PORT` (default: `8080`) and `DB_FILENAME` (default: `./db/electronicArtArgentina.sqlite3`)
+
+
 If everything went OK, you should see something like
 
 ```
@@ -36,12 +39,12 @@ If everything went OK, you should see something like
  - using env:   export GIN_MODE=release
  - using code:  gin.SetMode(gin.ReleaseMode)
 
-[GIN-debug] GET    /api/v1/exhibitions       --> main.GetExhibitions (4 handlers)
-[GIN-debug] GET    /api/v1/exhibitions/:e_id --> main.GetExhibition (4 handlers)
-[GIN-debug] GET    /api/v1/search            --> main.SearchExhibitions (4 handlers)
-[GIN-debug] OPTIONS /api/v1/exhibitions       --> main.EndpointsOptions (4 handlers)
-[GIN-debug] OPTIONS /api/v1/exhibitions/:e_id --> main.EndpointsOptions (4 handlers)
-[GIN-debug] OPTIONS /api/v1/search            --> main.EndpointsOptions (4 handlers)
+[GIN-debug] GET    /api/exhibitions       --> main.GetExhibitions (4 handlers)
+[GIN-debug] GET    /api/exhibitions/:e_id --> main.GetExhibition (4 handlers)
+[GIN-debug] GET    /api/search            --> main.SearchExhibitions (4 handlers)
+[GIN-debug] OPTIONS /api/exhibitions       --> main.EndpointsOptions (4 handlers)
+[GIN-debug] OPTIONS /api/exhibitions/:e_id --> main.EndpointsOptions (4 handlers)
+[GIN-debug] OPTIONS /api/search            --> main.EndpointsOptions (4 handlers)
 [GIN-debug] Listening and serving HTTP on :8080
 ```
 
@@ -49,7 +52,14 @@ and you can start querying the API.
 
 ### Endpoints
 
-For the moment, there are two endpoints: `exhibitions` and `search`. It accepts only the `GET` and `OPTION` verbs.
+For the moment, there are two endpoints: `exhibitions` and `search`. It accepts only `GET` and `OPTION` requests.
+
+#### `endpoints`
+
+**List all available endpoints**
+```
+GET /api
+```
 
 #### `exhibitions`
 
@@ -57,12 +67,14 @@ This method allows to query all of them or just one.
 
 **List all (around 15xx) exhibitions**
 ```
-GET /api/v1/exhibitions
+GET /api/exhibitions
 ```
+
+To retrieve more items, use the `GET` parameter `?page=n`
 
 **Just one by passing the ID**
 ```
-GET /api/v1/exhibitions/23
+GET /api/exhibitions/23
 ```
 
 #### `search`
@@ -78,58 +90,57 @@ This method allows to search, primarily by the exhibition's name and then you ca
 | `curator`   | The name of a curator, can be any `string`.                                                          |
 | `artist`    | The name of an artist, can be any `string`.                                                          |
 | `work`      | The name of the work, can be any `string`.                                                           |
-
+| `page`      | The page #. Each page shows 20 items.                                                                |
 
 **Examples**
 
 **List all exhibitions with `festival` on its name**
 ```
-GET /api/v1/search?q=festival
+GET /api/search?q=festival
 ```
 
 **...during 1998**
 ```
-GET /api/v1/search?q=festival&year=1998
+GET /api/search?q=festival&year=1998
 ```
 
 **...until 1998**
 ```
-GET /api/v1/search?q=festival&year=1998&when=until
+GET /api/search?q=festival&year=1998&when=until
 ```
 
 **...since 1998**
 ```
-GET /api/v1/search?q=festival&year=1998&when=since
+GET /api/search?q=festival&year=1998&when=since
 ```
 
 **...with technique `videoart`**
 ```
-GET /api/v1/search?q=festival&year=1998&when=since&technique=videoart
+GET /api/search?q=festival&year=1998&when=since&technique=videoart
 ```
 
 **...curated by Graciela Taquini**
 ```
-GET /api/v1/search?q=festival&year=1998&when=since&technique=videoart&curator=taquini
+GET /api/search?q=festival&year=1998&when=since&technique=videoart&curator=taquini
 ```
 
 **...artist Joanna Rytel**
 ```
-GET /api/v1/search?q=festival&year=1998&when=since&technique=videoart&curator=taquini&artist=rytel
+GET /api/search?q=festival&year=1998&when=since&technique=videoart&curator=taquini&artist=rytel
 ```
 
 **...with the word `sheep` on its name**
 ```
-GET /api/v1/search?q=festival&year=1998&when=since&technique=videoart&curator=taquini&artist=rytel&work=sheep
+GET /api/search?q=festival&year=1998&when=since&technique=videoart&curator=taquini&artist=rytel&work=sheep
 ```
 
 
 ## TODO
 
-* Pagination
+* Pagination: Fix hardcoded `lastPage`
 * Search by person (artists or curators)
 * Dockerfile and config files
 * Make the API public
-* Home with details about the API
 
 ## LICENSE
 
