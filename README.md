@@ -47,7 +47,7 @@ If everything went OK, you should see something like
 
 and you can start querying the API.
 
-### Entrypoints
+### Endpoints
 
 For the moment, there are two endpoints: `exhibitions` and `search`. It accepts only the `GET` and `OPTION` verbs.
 
