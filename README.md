@@ -60,7 +60,7 @@ This method allows to query all of them or just one.
 GET /api/v1/exhibitions
 ```
 
-**Just one by passint the ID**
+**Just one by passing the ID**
 ```
 GET /api/v1/exhibitions/23
 ```
@@ -129,6 +129,7 @@ GET /api/v1/search?q=festival&year=1998&when=since&technique=videoart&curator=ta
 * Search by person (artists or curators)
 * Dockerfile and config files
 * Make the API public
+* Home with details about the API
 
 ## LICENSE
 
