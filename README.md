@@ -3,9 +3,20 @@
 A very simple RESTful JSON API to query the dataset curated by [@cristianReynaga](https://github.com/cristianReynaga), you can read more about it [here](https://github.com/lvm/Dataset-Arte-Electronico-Argentino) (in spanish).  
 This API is built using Golang and SQLite3. I also provide a sanitised csv file ready to be imported to a sqlite db (with the necessary statements to ease the process).  
   
-This is a WIP with the intention to have a quick way to access this information and to keep learning golang :-)
+This is a WIP with the intention to have a quick way to access this information and to keep learning golang :-)  
+It's publicly accessible here: [http://arte-electronico.cyberpunk.com.ar/](http://arte-electronico.cyberpunk.com.ar/)  
+For now `http://` only.
 
 ## How to ...?
+
+### Easy way
+
+```bash
+$ docker pull lvm23/api-arte-electronico-argentino
+$ docker run -d -p 8080:8080 lvm23/api-arte-electronico-argentino
+```
+
+### Manual way
 
 As usual
 
@@ -17,6 +28,7 @@ $ cd api-dataset-arte-electronico-argentino/
 Then, create the SQLite database  
 
 ```bash
+$ rm -f db/electronicArtArgentina.sqlite3
 $ cd data
 $ cat csv-to-sqlite | sqlite3 ../db/electronicArtArgentina.sqlite3
 ```
@@ -47,7 +59,9 @@ If everything went OK, you should see something like
 [GIN-debug] Listening and serving HTTP on :8080
 ```
 
-and you can start querying the API.
+and you can start querying the API.  
+Note: If you export the `GIN_MODE=release` env var, those *debug* messages won't be displayed but it's recommended for production.  
+Also, you can take a look at the [Dockerfile](Dockerfile) to get an idea of the steps required.
 
 ### Endpoints
 
@@ -136,10 +150,13 @@ GET /api/search?q=festival&year=1998&when=since&technique=videoart&curator=taqui
 
 ## TODO
 
-* Pagination: Fix hardcoded `lastPage`
+* Pagination: cleaner way to create the `paginationLinks`
 * Search by person (artists or curators)
-* Dockerfile and config files
-* Make the API public
+* configure `https://`
+
+## Bugs, contributions
+
+Go [here](https://github.com/lvm/api-dataset-arte-electronico-argentino/issues)
 
 ## LICENSE
 
