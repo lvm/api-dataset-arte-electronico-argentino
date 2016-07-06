@@ -55,10 +55,14 @@ type (
 	}
 
 	PaginationLinks struct {
-		First       string `json:"first"`
+		First      string `json:"first"`
 		Last       string `json:"last"`
 		Prev       string `json:"prev"`
 		Next       string `json:"next"`
+	}
+
+	Meta struct {
+		TotalPages string `json:"total_pages"`
 	}
 
 	ResourceObject struct {
@@ -68,8 +72,9 @@ type (
 	}
 
 	ResourceObjects struct {
-		Data []ResourceObject `json:"data"`
+		Data  []ResourceObject `json:"data"`
 		Links PaginationLinks `json:"links"`
+		Meta  Meta `json:"meta"`
 	}
 
 	Error struct {
@@ -102,7 +107,7 @@ func paginationLink(endpoint string, pg string, which string) string {
 	}
 
 
-	link := fmt.Sprintf("%s/%s?page=%d", apiPath, endpoint, page)
+	link := fmt.Sprintf("%s/%s?page=%d&perPage=%d", apiPath, endpoint, page, perPage)
 	if endpoint == "search" && which == "last" { // TODO ugly
 		link = ""
 	}
@@ -111,11 +116,11 @@ func paginationLink(endpoint string, pg string, which string) string {
 }
 
 func newResourceObject(attr Exhibition) ResourceObject {
-    return ResourceObject {
-        Id: attr.Id,
-        Type: "exhibitions",
-        Attributes: attr,
-    }
+	return ResourceObject {
+		Id: attr.Id,
+		Type: "exhibitions",
+		Attributes: attr,
+	}
 }
 
 func newResourceObjects (exhibitions []Exhibition, endpoint string, pg string) ResourceObjects {
@@ -131,7 +136,7 @@ func newResourceObjects (exhibitions []Exhibition, endpoint string, pg string) R
 		Next: paginationLink(endpoint, pg, "next"),
 	}
 
-	return ResourceObjects{Data: resources, Links: links}
+	return ResourceObjects{Data: resources, Links: links, Meta: Meta{TotalPages: "80"}}
 }
 
 func pageOffset(pg string) int {
