@@ -151,6 +151,7 @@ GET /api/search?q=festival&year=1998&when=since&technique=videoart&curator=taqui
 ## TODO
 
 * Pagination: cleaner way to create the `paginationLinks`
+* Pagination: Optimize SQLite (drop `OFFSET` and `LIMIT`, use `INDEX`)
 * Search by person (artists or curators)
 * configure `https://`
 
