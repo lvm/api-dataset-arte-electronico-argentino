@@ -1,11 +1,13 @@
 # JSON API for Dataset Arte Electrónico Argentino
 
-A very simple RESTful JSON API to query the dataset curated by [@cristianReynaga](https://github.com/cristianReynaga), you can read more about it [here](https://github.com/lvm/Dataset-Arte-Electronico-Argentino) (in spanish).  
+A very simple RESTful JSON API to query the dataset curated by [@cristianReynaga](https://github.com/cristianReynaga), you can read more about it [here](https://github.com/cristianReynaga/Dataset-Arte-Electronico-Argentino) (in spanish).  
 This API is built using Golang and SQLite3. I also provide a sanitised csv file ready to be imported to a sqlite db (with the necessary statements to ease the process).  
   
 This is a WIP with the intention to have a quick way to access this information and to keep learning golang :-)  
-It's publicly accessible here: [http://arte-electronico.cyberpunk.com.ar/](http://arte-electronico.cyberpunk.com.ar/)  
-For now `http://` only.
+It's publicly accessible here (For now `http://` only): 
+
+* [website](http://arte-electronico.cyberpunk.com.ar/)  
+* [API](http://api.arte-electronico.cyberpunk.com.ar/)  
 
 ## How to ...?
 
@@ -38,10 +40,10 @@ For testing purpose, to build the API (I recommend using the [official golang im
 ```bash
 $ export GOPATH=$HOME
 $ go get .
-$ go run api.go
+$ go run
 ```
 
-Note: `api.go` reads a couple of extra enviroment vars: `HTTP_PORT` (default: `8080`), `DB_FILENAME` (default: `./db/electronicArtArgentina.sqlite3`), `TMPL_DIR` (default: `./tmpl`)
+Note: `api.go` reads a couple of extra enviroment vars: `HTTP_PORT` (default: `8080`), `DB_FILENAME` (default: `./db/electronicArtArgentina.sqlite3`))
 
 If everything went OK, you should see something like
 
@@ -50,12 +52,12 @@ If everything went OK, you should see something like
  - using env:   export GIN_MODE=release
  - using code:  gin.SetMode(gin.ReleaseMode)
 
-[GIN-debug] GET    /api/exhibitions       --> main.GetExhibitions (4 handlers)
-[GIN-debug] GET    /api/exhibitions/:e_id --> main.GetExhibition (4 handlers)
-[GIN-debug] GET    /api/search            --> main.SearchExhibitions (4 handlers)
-[GIN-debug] OPTIONS /api/exhibitions       --> main.EndpointsOptions (4 handlers)
-[GIN-debug] OPTIONS /api/exhibitions/:e_id --> main.EndpointsOptions (4 handlers)
-[GIN-debug] OPTIONS /api/search            --> main.EndpointsOptions (4 handlers)
+[GIN-debug] GET    //exhibitions       --> main.GetExhibitions (4 handlers)
+[GIN-debug] GET    /exhibitions/:e_id --> main.GetExhibition (4 handlers)
+[GIN-debug] GET    /search            --> main.SearchExhibitions (4 handlers)
+[GIN-debug] OPTIONS /exhibitions       --> main.EndpointsOptions (4 handlers)
+[GIN-debug] OPTIONS /exhibitions/:e_id --> main.EndpointsOptions (4 handlers)
+[GIN-debug] OPTIONS /search            --> main.EndpointsOptions (4 handlers)
 [GIN-debug] Listening and serving HTTP on :8080
 ```
 
@@ -71,7 +73,7 @@ For the moment, there are two endpoints: `exhibitions` and `search`. It accepts 
 
 **List all available endpoints**
 ```
-GET /api
+GET /
 ```
 
 #### `exhibitions`
@@ -80,14 +82,14 @@ This method allows to query all of them or just one.
 
 **List all (around 15xx) exhibitions**
 ```
-GET /api/exhibitions
+GET /exhibitions
 ```
 
 To retrieve more items, use the `GET` parameter `?page=n`
 
 **Just one by passing the ID**
 ```
-GET /api/exhibitions/23
+GET /exhibitions/23
 ```
 
 #### `search`
@@ -109,42 +111,42 @@ This method allows to search, primarily by the exhibition's name and then you ca
 
 **List all exhibitions with `festival` on its name**
 ```
-GET /api/search?q=festival
+GET /search?q=festival
 ```
 
 **...during 1998**
 ```
-GET /api/search?q=festival&year=1998
+GET /search?q=festival&year=1998
 ```
 
 **...until 1998**
 ```
-GET /api/search?q=festival&year=1998&when=until
+GET /search?q=festival&year=1998&when=until
 ```
 
 **...since 1998**
 ```
-GET /api/search?q=festival&year=1998&when=since
+GET /search?q=festival&year=1998&when=since
 ```
 
 **...with technique `videoart`**
 ```
-GET /api/search?q=festival&year=1998&when=since&technique=videoart
+GET /search?q=festival&year=1998&when=since&technique=videoart
 ```
 
 **...curated by Graciela Taquini**
 ```
-GET /api/search?q=festival&year=1998&when=since&technique=videoart&curator=taquini
+GET /search?q=festival&year=1998&when=since&technique=videoart&curator=taquini
 ```
 
 **...artist Joanna Rytel**
 ```
-GET /api/search?q=festival&year=1998&when=since&technique=videoart&curator=taquini&artist=rytel
+GET /search?q=festival&year=1998&when=since&technique=videoart&curator=taquini&artist=rytel
 ```
 
 **...with the word `sheep` on its name**
 ```
-GET /api/search?q=festival&year=1998&when=since&technique=videoart&curator=taquini&artist=rytel&work=sheep
+GET /search?q=festival&year=1998&when=since&technique=videoart&curator=taquini&artist=rytel&work=sheep
 ```
 
 
